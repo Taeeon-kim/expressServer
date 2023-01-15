@@ -12,19 +12,33 @@ app.get("/", (req, res) => {
   // 콜백함수부분을 컨트롤러 라 칭함
   res.send("Hello Home Page");
 });
-app.get("/topic", (req, res) => {
-  console.log(req.query);
+app.get("/topic/:num", (req, res) => {
+  console.log(req.params);
   var topics = ["javascript is..", "NodeJS is..", "Express is.."];
-  var str = `
+  var output = `
   <a href="/topic?id=0">Javascript</a><br>
   <a href="/topic?id=1">Node</a><br>
   <a href="/topic?id=2">Express</a><br><br>
+  <h1>${topics[req.params.num]}</h>
   `;
-  var output = str + topics[req.query.id];
-  res.send(req.query.id + "," + req.query.name);
+  //   var output = str + topics[req.query.id];
+  res.send(output);
 });
-app.get("/param/:module_id/:topic_id", (req, res) => {
-  res.json(req.params);
+app.get("/topic", (req, res) => {
+  //   console.log(req.query);
+  var topics = ["javascript is..", "NodeJS is..", "Express is.."];
+  var output = `
+  <a href="/topic?id=0">Javascript</a><br>
+  <a href="/topic?id=1">Node</a><br>
+  <a href="/topic?id=2">Express</a><br><br>
+  <h1>${topics[req.query.id]}</h>
+  `;
+  //   var output = str + topics[req.query.id];
+  res.send(output);
+});
+app.get("/topic/:id/:mode", (req, res) => {
+  res.send(req.params.id + "," + req.params.mode);
+  //   res.json(req.params);
 });
 app.get("/dynamic", (req, res) => {
   var lis = "";
