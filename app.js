@@ -6,6 +6,27 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.send("Hello Home Page");
 });
+app.get("/dynamic", (req, res) => {
+  var lis = "";
+  for (var i = 0; i < 5; i++) {
+    lis = lis + "<li>coding</li>";
+  }
+  var time = Date();
+  var output = `<!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8" />
+      </head>
+      <body>
+        <h1>test!</h1>
+        <ul>
+        ${lis}
+        </ul>
+        ${time}
+      </body>
+    </html>`;
+  res.send(output);
+});
 app.get("/route", (req, res) => {
   res.send("hello router, <img src='/choonsik.jpeg'>");
 });
