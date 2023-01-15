@@ -12,6 +12,14 @@ app.get("/", (req, res) => {
   // 콜백함수부분을 컨트롤러 라 칭함
   res.send("Hello Home Page");
 });
+app.get("/form", (req, res) => {
+  res.render("form");
+});
+app.get("/form_receiver", (req, res) => {
+  var title = req.query.title;
+  var description = req.query.description;
+  res.send(title + " " + description);
+});
 app.get("/topic/:num", (req, res) => {
   console.log(req.params);
   var topics = ["javascript is..", "NodeJS is..", "Express is.."];
