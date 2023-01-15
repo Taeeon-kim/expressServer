@@ -9,7 +9,22 @@ app.get("/template", (req, res) => {
 });
 // get을 router라 부르고 하는일을 routing 이라 표현한다.
 app.get("/", (req, res) => {
+  // 콜백함수부분을 컨트롤러 라 칭함
   res.send("Hello Home Page");
+});
+app.get("/topic", (req, res) => {
+  console.log(req.query);
+  var topics = ["javascript is..", "NodeJS is..", "Express is.."];
+  var str = `
+  <a href="/topic?id=0">Javascript</a><br>
+  <a href="/topic?id=1">Node</a><br>
+  <a href="/topic?id=2">Express</a><br><br>
+  `;
+  var output = str + topics[req.query.id];
+  res.send(req.query.id + "," + req.query.name);
+});
+app.get("/param/:module_id/:topic_id", (req, res) => {
+  res.json(req.params);
 });
 app.get("/dynamic", (req, res) => {
   var lis = "";
