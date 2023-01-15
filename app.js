@@ -1,9 +1,12 @@
 var express = require("express");
+var bodyParser = require("body-parser");
 var app = express();
 app.locals.pretty = true;
 app.set("view engine", "jade"); // 약속된 STRING view engine, jade engine으로 템플릿 사용 지정
 app.set("views", "./views"); // 관습적으로 views 폴더를 사용 하지만 이름바꿔도됨
 app.use(express.static("public"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.get("/template", (req, res) => {
   res.render("temp", { time: Date(), _title: "templae" });
 });
@@ -20,13 +23,19 @@ app.get("/form_receiver", (req, res) => {
   var description = req.query.description;
   res.send(title + " " + description);
 });
+app.post("/form_receiver", (req, res) => {
+  console.log(req.body);
+  var title = req.body.title;
+  var description = req.body.description;
+  res.send(title + " " + description);
+});
 app.get("/topic/:num", (req, res) => {
   console.log(req.params);
   var topics = ["javascript is..", "NodeJS is..", "Express is.."];
   var output = `
-  <a href="/topic?id=0">Javascript</a><br>
-  <a href="/topic?id=1">Node</a><br>
-  <a href="/topic?id=2">Express</a><br><br>
+  <a href="/topic/0">Javascript</a><br>
+  <a href="/topic/1">Node</a><br>
+  <a href="/topic/2">Express</a><br><br>
   <h1>${topics[req.params.num]}</h>
   `;
   //   var output = str + topics[req.query.id];
