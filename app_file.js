@@ -10,6 +10,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.listen(3000, () => {
   console.log("connected");
 });
+app.get("/topic/new", (req, res) => {
+  fs.readdir("data", (err, files) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("internal server error");
+    }
+    res.render("new", { topics: files });
+  });
+});
+
 app.get(["/topic", "/topic/:id"], (req, res) => {
   fs.readdir("data", (err, files) => {
     if (err) {
@@ -54,9 +64,6 @@ app.get(["/topic", "/topic/:id"], (req, res) => {
 //     // res.render("view", { topics: files });
 //   });
 // });
-app.get("/topic/new", (req, res) => {
-  res.render("new");
-});
 
 app.post("/topic", (req, res) => {
   var title = req.body.title;
@@ -66,6 +73,6 @@ app.post("/topic", (req, res) => {
       console.log(err);
       res.status(500).send("internal server error");
     }
-    res.send("Success");
+    res.redirect(`/topic/${title}`);
   });
 });
