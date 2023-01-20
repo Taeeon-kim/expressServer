@@ -39,4 +39,4 @@ const requestHandler = (req, res) => {
   //   process.exit();
 };
 
-module.exports = requestHandler;
+module.exports = { requestHandler };
