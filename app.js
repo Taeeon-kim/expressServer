@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const adminData = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const path = require('path');
 
@@ -11,7 +11,7 @@ app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public'))); // 미들웨어 정적파일 폴더 지정
-app.use('/admin', adminData.routes);
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use((req, res, next) => {
   // res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
