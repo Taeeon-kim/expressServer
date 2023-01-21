@@ -14,6 +14,8 @@ router.get('/', (req, res, next) => {
     pageTitle: 'Shop',
     path: '/',
     hasProducts: products.length > 0,
+    activeShop: true,
+    productSS: true,
   }); //app.set() 템플릿 셋팅하였기 때문에 파일명만 쓰면됨
 }); // 미들웨어함수 추가,
 
