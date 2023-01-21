@@ -6,6 +6,7 @@ const shopRoutes = require('./routes/shop');
 const path = require('path');
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public'))); // 미들웨어 정적파일 폴더 지정
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use((req, res, next) => {
