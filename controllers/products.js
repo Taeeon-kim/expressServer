@@ -1,4 +1,4 @@
-const products = [];
+const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
     // console.log('In another Middleware!');
@@ -14,12 +14,13 @@ exports.getAddProduct = (req, res, next) => {
 
 
 exports.postAddProduct=(req, res, next) => {
-    console.log(req.body);
-    products.push({ title: req.body.title });
+    const product = new Product(req.body.title);
+    product.save();
     res.redirect('/');
   }
 
 exports.getProducts = (req, res, next) => {
+    const products = Product.fetchAll();
     // console.log('In the Middleware!');
     //   console.log(adminData.products);
     //   res.sendFile(path.join(rootDir, 'views', 'shop.html')); // join 을 쓰는 이유는 윈도우와 리눅스 시스템에서 시스템 경로가 윈도우는 /, 리눅스는 \ 로 쓰기 때문에 이렇게 사용하는 것
