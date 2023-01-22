@@ -1,8 +1,14 @@
 const express = require('express');
-const productsController = require('../controllers/products')
+const shopController = require('../controllers/shop')
 
 const router = express.Router();
 
-router.get('/', productsController.getProducts); // 미들웨어함수 추가,
+router.get('/', shopController.getIndex); // 미들웨어함수 추가,
+router.get('/products', shopController.getProducts);
+
+router.get('/products/:productId', shopController.getProduct);
+router.get('/cart', shopController.getCart);
+router.get('/checkout', shopController.getCheckout);
+router.get('/orders',shopController.getOrders);
 
 module.exports = router;
