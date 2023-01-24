@@ -2,13 +2,17 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render('shop/product-list', {
-      prods: products,
-      pageTitle: 'All Products',
-      path: '/products',
-    }); //app.set() 템플릿 셋팅하였기 때문에 파일명만 쓰면됨
-  });
+  Product.fetchAll()
+    .then(([rows, fieldData]) => {
+      res.render('shop/product-list', {
+        prods: rows,
+        pageTitle: 'All Products',
+        path: '/products',
+      }); //app.set() 템플릿 셋팅하였기 때문에 파일명만 쓰면됨
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   // console.log('In the Middleware!');
   //   console.log(adminData.products);
   //   res.sendFile(path.join(rootDir, 'views', 'shop.html')); // join 을 쓰는 이유는 윈도우와 리눅스 시스템에서 시스템 경로가 윈도우는 /, 리눅스는 \ 로 쓰기 때문에 이렇게 사용하는 것
@@ -27,31 +31,40 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render('shop/index', {
-      prods: products,
-      pageTitle: 'Shop',
-      path: '/',
-    }); //app.set() 템플릿 셋팅하였기 때문에 파일명만 쓰면됨
-  });
+  Product.fetchAll()
+    .then(([rows, fieldData]) => {
+      res.render('shop/index', {
+        prods: rows,
+        pageTitle: 'Shop',
+        path: '/',
+      }); //app.set() 템플릿 셋팅하였기 때문에 파일명만 쓰면됨
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.getCart = (req, res, next) => {
   Cart.getCart((cart) => {
-    Product.fetchAll((products) => {
-      const cartProducts =[];
-      for (product of products) {
-        const cartProductData = cart.products.find((prod) => prod.id == product.id);
-        if (cartProductData) {
-          cartProducts.push({productData: product, qty: cartProductData.qty })
+    Product.fetchAll()
+      .then(([rows, fieldData]) => {
+        const cartProducts = [];
+        for (product of rows) {
+          const cartProductData = cart.products.find(
+            (prod) => prod.id == product.id
+          );
+          if (cartProductData) {
+            cartProducts.push({
+              productData: product,
+              qty: cartProductData.qty,
+            });
+          }
         }
-      }
-      res.render('shop/cart', {
-        path: '/cart',
-        pageTitle: 'Your Cart',
-        products: cartProducts
-      });
-    });
+        res.render('shop/cart', {
+          path: '/cart',
+          pageTitle: 'Your Cart',
+          products: cartProducts,
+        });
+      })
+      .catch((err) => console.log(err));
   });
 };
 
@@ -68,8 +81,8 @@ exports.postCartDeleteProduct = (req, res, next) => {
   Product.findById(prodId, (product) => {
     Cart.deleteProduct(prodId, product.price);
     res.redirect('/cart');
-  })
-}
+  });
+};
 
 exports.getOrders = (req, res, next) => {
   res.render('shop/orders', {
