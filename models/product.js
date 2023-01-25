@@ -15,7 +15,21 @@ class Product {
       .collection('products')
       .insertOne(this)
       .then((result) => {
-        console.log("result: ",result);
+        console.log('result: ', result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  static fetchAll() {
+    const db = getDb();
+    return db
+      .collection('products')
+      .find()
+      .toArray() // mongodb 연결후 모든 데이터를 찾아서 가져옴, 가져온걸 JS Array로 교체
+      .then((products) => {
+        console.log(products);
+        return products;
       })
       .catch((err) => {
         console.log(err);
