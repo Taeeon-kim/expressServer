@@ -1,7 +1,5 @@
 const Product = require('../models/product');
-const mongodb = require('mongodb');
 
-const ObjectId = mongodb.ObjectId;
 exports.getAddProduct = (req, res, next) => {
   // console.log('In another Middleware!');
   // res.sendFile(path.join(rootDir, 'views', 'add-product.html')); // 현재경로에서 ../ 뒤로가서 views 폴더의 add-product.html을 보내줌
@@ -65,7 +63,7 @@ exports.postEditProduct = (req, res, next) => {
     price: updatedPrice,
     imageUrl: updatedImageUrl,
     description: updatedDescription,
-    id: new ObjectId(prodId),
+    id: prodId,
   });
   product
     .save()
