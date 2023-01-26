@@ -26,8 +26,9 @@ class User {
 
     if (cartProductIndex >= 0) {
       newQuantity = this.cart.items[cartProductIndex].quantity + 1; // 기존 cart.items에 있는 Index로가서 +1한 수량을 newQuantity에 넣어줌
-      updatedCartItems[cartProductIndex].quantity = newQuantity;// 업데이트할 객체 index에 해당 newQuantity넣어줌
-    } else { // 같은것이 없다면 새로운 카트 제품이니 업데이트객체에 push하여 수량 1개짜리 넣어줌
+      updatedCartItems[cartProductIndex].quantity = newQuantity; // 업데이트할 객체 index에 해당 newQuantity넣어줌
+    } else {
+      // 같은것이 없다면 새로운 카트 제품이니 업데이트객체에 push하여 수량 1개짜리 넣어줌
       updatedCartItems.push({
         productId: new ObjectId(product._id),
         quantity: newQuantity,
@@ -53,6 +54,29 @@ class User {
       .then((user) => {
         console.log('findById: ', user);
         return user;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  getCart() {
+    const db = getDb();
+    const productIds = this.cart.items.map((i) => {
+      return i.productId;
+    });
+    return db
+      .collection('products')
+      .find({ _id: { $in: productIds } })
+      .toArray()
+      .then((products) => {
+        return products.map((product) => {
+          return {
+            ...product,
+            quantity: this.cart.items.find((i) => {
+              return i.productId.toString() === product._id.toString();
+            }).quantity
+          };
+        });
       })
       .catch((err) => {
         console.log(err);
