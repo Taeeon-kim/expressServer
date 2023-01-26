@@ -77,7 +77,6 @@ exports.postEditProduct = (req, res, next) => {
 exports.getProducts = (req, res, next) => {
   Product.fetchAll()
     .then((products) => {
-      console.log(products);
       res.render('admin/products', {
         prods: products,
         pageTitle: 'Admin Product',
@@ -87,15 +86,12 @@ exports.getProducts = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-// exports.postDeleteProduct = (req, res, next) => {
-//   const prodId = req.body.productId;
-//   Product.findByPk(prodId)
-//     .then((product) => {
-//       return product.destroy();
-//     })
-//     .then((result) => {
-//       console.log('Product deleted', result);
-//       res.redirect('/admin/products');
-//     })
-//     .catch((err) => console.log(err));
-// };
+exports.postDeleteProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.deleteById(prodId)
+    .then(() => {
+      console.log('Product deleted');
+      res.redirect('/admin/products');
+    })
+    .catch((err) => console.log(err));
+};
